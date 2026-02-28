@@ -40,13 +40,6 @@
       gap: 14px;
     }
 
-    .logo {
-      width: 38px;
-      height: 38px;
-      flex-shrink: 0;
-      position: relative;
-    }
-
     .logo svg { width: 38px; height: 38px; }
 
     .header-text h1 {
@@ -65,6 +58,28 @@
     }
 
     #map { flex: 1; width: 100%; position: relative; }
+
+    /* Locate Button */
+    .locate-btn {
+      position: absolute;
+      bottom: 100px;
+      right: 14px;
+      z-index: 800;
+      width: 44px;
+      height: 44px;
+      background: #fff;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: transform 0.15s;
+    }
+
+    .locate-btn:active { transform: scale(0.93); }
 
     /* Popup */
     .leaflet-popup-content-wrapper {
@@ -144,13 +159,7 @@
 
     .ar-btn:hover { opacity: 0.8; }
 
-    /* Marker */
-    .marker-wrap {
-      width: 40px;
-      height: 40px;
-      position: relative;
-    }
-
+    /* AR Marker */
     .marker-outer {
       width: 40px;
       height: 40px;
@@ -168,8 +177,22 @@
       background: #fff;
     }
 
-    .marker-outer.filled .marker-inner {
-      background: var(--dark);
+    .marker-outer.filled .marker-inner { background: var(--dark); }
+
+    /* Mein Standort Punkt */
+    .my-location-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #3b82f6;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+      animation: pulse-blue 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-blue {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(59,130,246,0.3); }
+      50% { box-shadow: 0 0 0 8px rgba(59,130,246,0.0); }
     }
 
     /* Legend */
@@ -212,8 +235,13 @@
 
     .legend-dot.outline {
       background: #fff;
-      border: 2px solid;
-      border-color: #a855f7;
+      border: 2px solid #a855f7;
+    }
+
+    .legend-dot.blue {
+      background: #3b82f6;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 2px rgba(59,130,246,0.4);
     }
 
     .leaflet-tile { filter: grayscale(1) brightness(1.05); }
@@ -223,7 +251,6 @@
 
 <header>
   <div class="logo">
-    <!-- Logo nachgebaut aus dem Bild: zwei überlappende Kreise -->
     <svg viewBox="0 0 60 44" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -244,6 +271,8 @@
 
 <div id="map"></div>
 
+<button class="locate-btn" id="locateBtn" title="Mein Standort">📍</button>
+
 <script>
   const map = L.map('map', { center: [37.3510, 23.4645], zoom: 15 });
 
@@ -251,6 +280,7 @@
     attribution: '© OpenStreetMap', maxZoom: 19
   }).addTo(map);
 
+  // AR Locations
   const locations = [
     {
       lat: 37.35158, lng: 23.46232,
@@ -296,12 +326,60 @@
     if (i === 0) setTimeout(() => marker.openPopup(), 800);
   });
 
+  // Mein Standort – blauer Punkt, live tracking
+  let myMarker = null;
+  let watchId = null;
+
+  const myIcon = L.divIcon({
+    className: '',
+    html: `<div class="my-location-dot"></div>`,
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+  });
+
+  document.getElementById('locateBtn').addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      alert('GPS nicht verfügbar auf diesem Gerät.');
+      return;
+    }
+
+    // Wenn schon aktiv, stoppen
+    if (watchId !== null) {
+      navigator.geolocation.clearWatch(watchId);
+      watchId = null;
+      if (myMarker) { myMarker.remove(); myMarker = null; }
+      document.getElementById('locateBtn').textContent = '📍';
+      return;
+    }
+
+    document.getElementById('locateBtn').textContent = '🔵';
+
+    watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        const { latitude: lat, longitude: lng } = pos.coords;
+
+        if (!myMarker) {
+          myMarker = L.marker([lat, lng], { icon: myIcon }).addTo(map);
+          map.setView([lat, lng], 16);
+        } else {
+          myMarker.setLatLng([lat, lng]);
+        }
+      },
+      (err) => {
+        alert('GPS Fehler: ' + err.message);
+      },
+      { enableHighAccuracy: true, maximumAge: 3000, timeout: 10000 }
+    );
+  });
+
+  // Legend
   const legendEl = document.createElement('div');
   legendEl.className = 'legend';
   legendEl.innerHTML = `
-    <div class="legend-title">AR Locations</div>
+    <div class="legend-title">Legende</div>
     <div class="legend-item"><span class="legend-dot"></span> Hydronetta</div>
     <div class="legend-item"><span class="legend-dot outline"></span> Hydra Kunst</div>
+    <div class="legend-item"><span class="legend-dot blue"></span> Mein Standort</div>
   `;
   document.getElementById('map').appendChild(legendEl);
 </script>
