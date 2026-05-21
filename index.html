@@ -15,9 +15,7 @@
       --dark: #1a1a1a;
       --text-muted: rgba(26,26,26,0.45);
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       background: var(--bg);
       color: var(--dark);
@@ -27,7 +25,6 @@
       display: flex;
       flex-direction: column;
     }
-
     header {
       position: relative;
       z-index: 1000;
@@ -38,14 +35,12 @@
       align-items: center;
       gap: 14px;
     }
-
     .header-text h1 {
       font-size: 16px;
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--dark);
     }
-
     .header-text p {
       font-size: 11px;
       font-weight: 400;
@@ -53,9 +48,7 @@
       letter-spacing: 0.05em;
       margin-top: 1px;
     }
-
     #map { flex: 1; width: 100%; position: relative; }
-
     .locate-btn {
       position: absolute;
       bottom: 100px;
@@ -74,9 +67,7 @@
       font-size: 20px;
       transition: transform 0.15s;
     }
-
     .locate-btn:active { transform: scale(0.93); }
-
     .leaflet-popup-content-wrapper {
       background: #fff !important;
       border: none !important;
@@ -87,7 +78,6 @@
       padding: 0 !important;
       overflow: hidden;
     }
-
     .leaflet-popup-content { margin: 0 !important; }
     .leaflet-popup-tip-container { display: none; }
     .leaflet-popup-close-button {
@@ -97,14 +87,8 @@
       right: 14px !important;
       font-weight: 300 !important;
     }
-
-    .popup-bar {
-      height: 4px;
-      background: linear-gradient(90deg, #ff6ec7, #a855f7, #22d3ee);
-    }
-
+    .popup-bar { height: 4px; background: linear-gradient(90deg, #ff6ec7, #a855f7, #22d3ee); }
     .popup-inner { padding: 16px 18px 18px; min-width: 230px; }
-
     .popup-tag {
       font-size: 10px;
       font-weight: 500;
@@ -113,7 +97,6 @@
       color: var(--text-muted);
       margin-bottom: 6px;
     }
-
     .popup-inner h2 {
       font-size: 20px;
       font-weight: 700;
@@ -121,21 +104,18 @@
       color: var(--dark);
       margin-bottom: 6px;
     }
-
     .popup-inner p {
       font-size: 13px;
       color: rgba(26,26,26,0.6);
       margin-bottom: 12px;
       line-height: 1.5;
     }
-
     .popup-coords {
       font-size: 10px;
       color: var(--text-muted);
       margin-bottom: 14px;
       font-weight: 500;
     }
-
     .ar-btn {
       display: block;
       width: 100%;
@@ -151,9 +131,7 @@
       border-radius: 10px;
       transition: opacity 0.2s;
     }
-
     .ar-btn:hover { opacity: 0.8; }
-
     .marker-outer {
       width: 40px;
       height: 40px;
@@ -167,9 +145,7 @@
       cursor: pointer;
       transition: transform 0.15s ease;
     }
-
     .marker-outer:active { transform: scale(0.88); }
-
     .marker-inner {
       width: 28px;
       height: 28px;
@@ -177,9 +153,6 @@
       background: #1a1a1a;
       pointer-events: none;
     }
-
-    .marker-outer.filled .marker-inner { background: #1a1a1a; }
-
     .my-location-dot {
       width: 18px;
       height: 18px;
@@ -189,12 +162,10 @@
       box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
       animation: pulse-blue 2s ease-in-out infinite;
     }
-
     @keyframes pulse-blue {
       0%, 100% { box-shadow: 0 0 0 3px rgba(59,130,246,0.3); }
       50% { box-shadow: 0 0 0 10px rgba(59,130,246,0.0); }
     }
-
     .legend {
       position: absolute;
       bottom: 20px;
@@ -205,7 +176,6 @@
       padding: 12px 16px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
-
     .legend-title {
       font-size: 9px;
       font-weight: 700;
@@ -214,7 +184,6 @@
       color: var(--text-muted);
       margin-bottom: 8px;
     }
-
     .legend-item {
       display: flex;
       align-items: center;
@@ -224,7 +193,6 @@
       font-weight: 500;
       color: var(--dark);
     }
-
     .legend-dot {
       width: 12px; height: 12px;
       border-radius: 50%;
@@ -233,19 +201,15 @@
       box-sizing: border-box;
       flex-shrink: 0;
     }
-
     .legend-dot.white {
       background: #fff;
       border: 2px solid #a855f7;
-      box-shadow: none;
     }
-
     .legend-dot.blue {
       background: #3b82f6;
       border: 2px solid #fff;
       box-shadow: 0 0 0 2px rgba(59,130,246,0.4);
     }
-
     .leaflet-tile { filter: grayscale(1) brightness(1.05); }
   </style>
 </head>
@@ -275,108 +239,24 @@
 <button class="locate-btn" id="locateBtn" title="Zu meinem Standort">🎯</button>
 
 <script>
-  // ── Hydra Map Analytics Tracker ──
-  // Dashboard öffnen: Shift + M
-  (function() {
-    var STORE = 'hydra_map_analytics';
+  // ── Hydra Map · Analytics Tracker · Google Sheets ──
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycby8ymlV-RJx_Z-swmgJCR4YOpE4Fq4ZsLZIIgnqm1u4uRzOGo2c8Ew4W-WmCLrn4uln/exec';
 
-    function load() {
-      try { return JSON.parse(localStorage.getItem(STORE) || 'null') || { markers: {}, links: [], sessions: 0 }; }
-      catch(e) { return { markers: {}, links: [], sessions: 0 }; }
-    }
-    function save(d) {
-      try { localStorage.setItem(STORE, JSON.stringify(d)); } catch(e) {}
-    }
-
-    var data = load();
-    data.sessions = (data.sessions || 0) + 1;
-    save(data);
-
-    window._mapTrack = {
-      markerClick: function(title, tag, coords) {
-        var key = title + ' · ' + tag;
-        data.markers[key] = (data.markers[key] || 0) + 1;
-        data.links = data.links || [];
-        save(data);
-      },
-      linkClick: function(title, url) {
-        data.links = data.links || [];
-        data.links.push({ title: title, url: url, ts: Date.now() });
-        if (data.links.length > 200) data.links = data.links.slice(-200);
-        save(data);
-      }
-    };
-
-    function openDashboard() {
-      var d = load();
-      var existing = document.getElementById('hydra-map-dash');
-      if (existing) { existing.remove(); return; }
-
-      var markersSorted = Object.entries(d.markers || {}).sort(function(a,b){ return b[1]-a[1]; });
-      var maxM = markersSorted.length > 0 ? markersSorted[0][1] : 1;
-
-      // Link-Klicks zählen
-      var linkCounts = {};
-      (d.links || []).forEach(function(l) {
-        var k = l.title + ' → ' + (l.url || '').replace('https://digitalbohemians.github.io/','');
-        linkCounts[k] = (linkCounts[k] || 0) + 1;
+  function track(typ, element, details) {
+    try {
+      var params = new URLSearchParams({
+        seite: 'Map',
+        typ: typ,
+        element: element || '',
+        details: details || '',
+        url: ''
       });
-      var linksSorted = Object.entries(linkCounts).sort(function(a,b){ return b[1]-a[1]; });
+      fetch(SHEET_URL + '?' + params.toString(), { mode: 'no-cors' }).catch(function(){});
+    } catch(e) {}
+  }
 
-      var markerBars = markersSorted.length === 0
-        ? '<div style="color:#aaa;font-size:13px;padding:8px 0;">Noch keine Marker-Klicks.</div>'
-        : markersSorted.map(function(e) {
-            var pct = Math.round(e[1] / maxM * 100);
-            return '<div style="margin-bottom:10px;">'
-              + '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">'
-              + '<span style="color:#1a1a1a;flex:1;padding-right:8px;">' + e[0] + '</span>'
-              + '<span style="color:#a855f7;font-weight:700;flex-shrink:0;">' + e[1] + '</span></div>'
-              + '<div style="height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;">'
-              + '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#a855f7,#ec4899);border-radius:3px;"></div></div></div>';
-          }).join('');
-
-      var linkRows = linksSorted.length === 0
-        ? '<div style="color:#aaa;font-size:13px;padding:8px 0;">Noch keine Link-Klicks.</div>'
-        : linksSorted.map(function(e) {
-            return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">'
-              + '<span style="color:#555;flex:1;padding-right:8px;">' + e[0] + '</span>'
-              + '<span style="color:#a855f7;font-weight:700;flex-shrink:0;">' + e[1] + '×</span></div>';
-          }).join('');
-
-      var dash = document.createElement('div');
-      dash.id = 'hydra-map-dash';
-      dash.style.cssText = 'position:fixed;top:0;right:0;bottom:0;width:360px;background:#fff;box-shadow:-4px 0 40px rgba(0,0,0,0.12);z-index:9999;overflow-y:auto;font-family:DM Sans,sans-serif;';
-
-      dash.innerHTML = ''
-        + '<div style="padding:20px 24px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;">'
-        + '<div><div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;background:linear-gradient(90deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;">Map Analytics</div>'
-        + '<div style="font-size:17px;font-weight:700;letter-spacing:-0.02em;">Hydra AR Map</div></div>'
-        + '<button onclick="document.getElementById(\'hydra-map-dash\').remove()" style="background:none;border:1px solid #e0e0e0;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;color:#888;">✕</button></div>'
-
-        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#f0f0f0;border-bottom:1px solid #f0f0f0;">'
-        + '<div style="background:#fff;padding:16px;text-align:center;"><div style="font-size:11px;color:#aaa;margin-bottom:4px;">Sessions</div><div style="font-size:22px;font-weight:700;">' + (d.sessions||0) + '</div></div>'
-        + '<div style="background:#fff;padding:16px;text-align:center;"><div style="font-size:11px;color:#aaa;margin-bottom:4px;">Marker-Klicks</div><div style="font-size:22px;font-weight:700;color:#a855f7;">' + Object.values(d.markers||{}).reduce(function(s,v){return s+v;},0) + '</div></div>'
-        + '</div>'
-
-        + '<div style="padding:20px 24px;border-bottom:1px solid #f0f0f0;">'
-        + '<div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#a855f7;margin-bottom:14px;">Meist geklickte Locations</div>'
-        + markerBars + '</div>'
-
-        + '<div style="padding:20px 24px;border-bottom:1px solid #f0f0f0;">'
-        + '<div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#a855f7;margin-bottom:8px;">AR Link-Klicks</div>'
-        + linkRows + '</div>'
-
-        + '<div style="padding:20px 24px;">'
-        + '<button onclick="if(confirm(\'Alle Daten löschen?\')){localStorage.removeItem(\'hydra_map_analytics\');document.getElementById(\'hydra-map-dash\').remove();}" style="width:100%;padding:10px;background:none;border:1px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px;color:#bbb;">Daten zurücksetzen</button>'
-        + '</div>';
-
-      document.body.appendChild(dash);
-    }
-
-    document.addEventListener('keydown', function(e) {
-      if (e.shiftKey && e.key === 'M') openDashboard();
-    });
-  })();
+  // Seitenaufruf tracken
+  track('Seitenaufruf', 'Map', navigator.language || '');
 </script>
 
 <script>
@@ -405,156 +285,21 @@
       url: "https://digitalbohemians.github.io/AR-Hydra/",
       filled: false
     },
-    {
-      lat: 37.353243, lng: 23.480410,
-      title: "Exhibition Point",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "37.35324° N · 23.48041° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.353844, lng: 23.475182,
-      title: "Exhibition Point",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "37.35384° N · 23.47518° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.353013, lng: 23.467189,
-      title: "Exhibition Point",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "37.35301° N · 23.46719° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.352643, lng: 23.466445,
-      title: "Exhibition Point",
-      tag: "Interaktive AR Gruppenausstellung",
-      desc: "Artist details coming soon.",
-      coords: "37.35264° N · 23.46645° E",
-      url: "#",
-      filled: false,
-      style: "purple-white"
-    },
-    {
-      lat: 37.348514, lng: 23.468132,
-      title: "Exhibition Point",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "37.34851° N · 23.46813° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.348126, lng: 23.458214,
-      title: "Exhibition Point",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "37.34813° N · 23.45821° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.347824, lng: 23.457589,
-      title: "Exhibition Point",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "37.34782° N · 23.45759° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.346509, lng: 23.455226,
-      title: "Hydra 180 40",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "37.34651° N · 23.45523° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.344494, lng: 23.447875,
-      title: "Exhibition Point",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "37.34449° N · 23.44788° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.343735, lng: 23.446410,
-      title: "Taverna Marina",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "Vlichou, Vlichos 180 40",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.337666, lng: 23.439982,
-      title: "Exhibition Point",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "37.33767° N · 23.43998° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.346618, lng: 23.459154,
-      title: "Exhibition Point",
-      tag: "AR Poster",
-      desc: "Artist details coming soon.",
-      coords: "37.34662° N · 23.45915° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.350012, lng: 23.466726,
-      title: "Exhibition Point",
-      tag: "Physische Ausstellung",
-      desc: "Artist details coming soon.",
-      coords: "37.35001° N · 23.46673° E",
-      url: "#",
-      filled: false,
-      style: "purple-white"
-    },
-    {
-      lat: 37.301223, lng: 23.395489,
-      title: "Exhibition Point",
-      tag: "Exhibition Point",
-      desc: "Artist details coming soon.",
-      coords: "37.30122° N · 23.39549° E",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    },
-    {
-      lat: 37.334333, lng: 23.463215,
-      title: "Moni Profitou Iliou",
-      tag: "Exhibition Point",
-      desc: "Artist details coming soon.",
-      coords: "Moni Profitou Iliou, 180 40",
-      url: "#",
-      filled: false,
-      style: "purple-black"
-    }
+    { lat: 37.353243, lng: 23.480410, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.35324° N · 23.48041° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.353844, lng: 23.475182, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.35384° N · 23.47518° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.353013, lng: 23.467189, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.35301° N · 23.46719° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.352643, lng: 23.466445, title: "Exhibition Point", tag: "Interaktive AR Gruppenausstellung", desc: "Artist details coming soon.", coords: "37.35264° N · 23.46645° E", url: "#", filled: false, style: "purple-white" },
+    { lat: 37.348514, lng: 23.468132, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.34851° N · 23.46813° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.348126, lng: 23.458214, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.34813° N · 23.45821° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.347824, lng: 23.457589, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.34782° N · 23.45759° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.346509, lng: 23.455226, title: "Hydra 180 40", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.34651° N · 23.45523° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.344494, lng: 23.447875, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.34449° N · 23.44788° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.343735, lng: 23.446410, title: "Taverna Marina", tag: "AR Poster", desc: "Artist details coming soon.", coords: "Vlichou, Vlichos 180 40", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.337666, lng: 23.439982, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.33767° N · 23.43998° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.346618, lng: 23.459154, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.34662° N · 23.45915° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.350012, lng: 23.466726, title: "Exhibition Point", tag: "Physische Ausstellung", desc: "Artist details coming soon.", coords: "37.35001° N · 23.46673° E", url: "#", filled: false, style: "purple-white" },
+    { lat: 37.301223, lng: 23.395489, title: "Exhibition Point", tag: "Exhibition Point", desc: "Artist details coming soon.", coords: "37.30122° N · 23.39549° E", url: "#", filled: false, style: "purple-black" },
+    { lat: 37.334333, lng: 23.463215, title: "Moni Profitou Iliou", tag: "Exhibition Point", desc: "Artist details coming soon.", coords: "Moni Profitou Iliou, 180 40", url: "#", filled: false, style: "purple-black" }
   ];
 
   function markerSize(zoom) {
@@ -581,14 +326,14 @@
   locations.forEach((loc, i) => {
     const marker = L.marker([loc.lat, loc.lng], { icon: makeIcon(loc.filled, map.getZoom(), loc.style) }).addTo(map);
 
-    // ── Tracker: Marker-Klick ──
+    // ── Marker-Klick tracken ──
     marker.on('click', function() {
-      if (window._mapTrack) window._mapTrack.markerClick(loc.title, loc.tag, loc.coords);
+      track('Marker-Klick', loc.title, loc.tag);
     });
 
     const hasLink = loc.url && loc.url !== '#';
     const btnHtml = hasLink
-      ? `<a class="ar-btn" href="${loc.url}" target="_blank" onclick="if(window._mapTrack)window._mapTrack.linkClick('${loc.title} · ${loc.tag}','${loc.url}')">↗ AR Experience öffnen</a>`
+      ? `<a class="ar-btn" href="${loc.url}" target="_blank" onclick="track('AR-Link-Klick','${loc.title} · ${loc.tag}','${loc.url}')">↗ AR Experience öffnen</a>`
       : `<div style="font-size:11px;color:rgba(26,26,26,0.35);text-align:center;padding:10px 0;letter-spacing:0.08em;text-transform:uppercase;">Coming Soon</div>`;
 
     marker.bindPopup(`
@@ -614,7 +359,6 @@
   });
 
   let myMarker = null;
-
   const myIcon = L.divIcon({
     className: '',
     html: `<div class="my-location-dot"></div>`,
