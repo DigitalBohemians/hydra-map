@@ -168,9 +168,7 @@
       transition: transform 0.15s ease;
     }
 
-    .marker-outer:active {
-      transform: scale(0.88);
-    }
+    .marker-outer:active { transform: scale(0.88); }
 
     .marker-inner {
       width: 28px;
@@ -236,11 +234,6 @@
       flex-shrink: 0;
     }
 
-    .legend-dot.outline {
-      background: #a855f7;
-      border: 2px solid #1a1a1a;
-    }
-
     .legend-dot.white {
       background: #fff;
       border: 2px solid #a855f7;
@@ -279,8 +272,112 @@
 </header>
 
 <div id="map"></div>
-
 <button class="locate-btn" id="locateBtn" title="Zu meinem Standort">🎯</button>
+
+<script>
+  // ── Hydra Map Analytics Tracker ──
+  // Dashboard öffnen: Shift + M
+  (function() {
+    var STORE = 'hydra_map_analytics';
+
+    function load() {
+      try { return JSON.parse(localStorage.getItem(STORE) || 'null') || { markers: {}, links: [], sessions: 0 }; }
+      catch(e) { return { markers: {}, links: [], sessions: 0 }; }
+    }
+    function save(d) {
+      try { localStorage.setItem(STORE, JSON.stringify(d)); } catch(e) {}
+    }
+
+    var data = load();
+    data.sessions = (data.sessions || 0) + 1;
+    save(data);
+
+    window._mapTrack = {
+      markerClick: function(title, tag, coords) {
+        var key = title + ' · ' + tag;
+        data.markers[key] = (data.markers[key] || 0) + 1;
+        data.links = data.links || [];
+        save(data);
+      },
+      linkClick: function(title, url) {
+        data.links = data.links || [];
+        data.links.push({ title: title, url: url, ts: Date.now() });
+        if (data.links.length > 200) data.links = data.links.slice(-200);
+        save(data);
+      }
+    };
+
+    function openDashboard() {
+      var d = load();
+      var existing = document.getElementById('hydra-map-dash');
+      if (existing) { existing.remove(); return; }
+
+      var markersSorted = Object.entries(d.markers || {}).sort(function(a,b){ return b[1]-a[1]; });
+      var maxM = markersSorted.length > 0 ? markersSorted[0][1] : 1;
+
+      // Link-Klicks zählen
+      var linkCounts = {};
+      (d.links || []).forEach(function(l) {
+        var k = l.title + ' → ' + (l.url || '').replace('https://digitalbohemians.github.io/','');
+        linkCounts[k] = (linkCounts[k] || 0) + 1;
+      });
+      var linksSorted = Object.entries(linkCounts).sort(function(a,b){ return b[1]-a[1]; });
+
+      var markerBars = markersSorted.length === 0
+        ? '<div style="color:#aaa;font-size:13px;padding:8px 0;">Noch keine Marker-Klicks.</div>'
+        : markersSorted.map(function(e) {
+            var pct = Math.round(e[1] / maxM * 100);
+            return '<div style="margin-bottom:10px;">'
+              + '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">'
+              + '<span style="color:#1a1a1a;flex:1;padding-right:8px;">' + e[0] + '</span>'
+              + '<span style="color:#a855f7;font-weight:700;flex-shrink:0;">' + e[1] + '</span></div>'
+              + '<div style="height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;">'
+              + '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#a855f7,#ec4899);border-radius:3px;"></div></div></div>';
+          }).join('');
+
+      var linkRows = linksSorted.length === 0
+        ? '<div style="color:#aaa;font-size:13px;padding:8px 0;">Noch keine Link-Klicks.</div>'
+        : linksSorted.map(function(e) {
+            return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">'
+              + '<span style="color:#555;flex:1;padding-right:8px;">' + e[0] + '</span>'
+              + '<span style="color:#a855f7;font-weight:700;flex-shrink:0;">' + e[1] + '×</span></div>';
+          }).join('');
+
+      var dash = document.createElement('div');
+      dash.id = 'hydra-map-dash';
+      dash.style.cssText = 'position:fixed;top:0;right:0;bottom:0;width:360px;background:#fff;box-shadow:-4px 0 40px rgba(0,0,0,0.12);z-index:9999;overflow-y:auto;font-family:DM Sans,sans-serif;';
+
+      dash.innerHTML = ''
+        + '<div style="padding:20px 24px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;">'
+        + '<div><div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;background:linear-gradient(90deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;">Map Analytics</div>'
+        + '<div style="font-size:17px;font-weight:700;letter-spacing:-0.02em;">Hydra AR Map</div></div>'
+        + '<button onclick="document.getElementById(\'hydra-map-dash\').remove()" style="background:none;border:1px solid #e0e0e0;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;color:#888;">✕</button></div>'
+
+        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#f0f0f0;border-bottom:1px solid #f0f0f0;">'
+        + '<div style="background:#fff;padding:16px;text-align:center;"><div style="font-size:11px;color:#aaa;margin-bottom:4px;">Sessions</div><div style="font-size:22px;font-weight:700;">' + (d.sessions||0) + '</div></div>'
+        + '<div style="background:#fff;padding:16px;text-align:center;"><div style="font-size:11px;color:#aaa;margin-bottom:4px;">Marker-Klicks</div><div style="font-size:22px;font-weight:700;color:#a855f7;">' + Object.values(d.markers||{}).reduce(function(s,v){return s+v;},0) + '</div></div>'
+        + '</div>'
+
+        + '<div style="padding:20px 24px;border-bottom:1px solid #f0f0f0;">'
+        + '<div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#a855f7;margin-bottom:14px;">Meist geklickte Locations</div>'
+        + markerBars + '</div>'
+
+        + '<div style="padding:20px 24px;border-bottom:1px solid #f0f0f0;">'
+        + '<div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#a855f7;margin-bottom:8px;">AR Link-Klicks</div>'
+        + linkRows + '</div>'
+
+        + '<div style="padding:20px 24px;">'
+        + '<button onclick="if(confirm(\'Alle Daten löschen?\')){localStorage.removeItem(\'hydra_map_analytics\');document.getElementById(\'hydra-map-dash\').remove();}" style="width:100%;padding:10px;background:none;border:1px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px;color:#bbb;">Daten zurücksetzen</button>'
+        + '</div>';
+
+      document.body.appendChild(dash);
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.shiftKey && e.key === 'M') openDashboard();
+    });
+  })();
+</script>
 
 <script>
   const map = L.map('map', { center: [37.3510, 23.4645], zoom: 15 });
@@ -483,6 +580,17 @@
 
   locations.forEach((loc, i) => {
     const marker = L.marker([loc.lat, loc.lng], { icon: makeIcon(loc.filled, map.getZoom(), loc.style) }).addTo(map);
+
+    // ── Tracker: Marker-Klick ──
+    marker.on('click', function() {
+      if (window._mapTrack) window._mapTrack.markerClick(loc.title, loc.tag, loc.coords);
+    });
+
+    const hasLink = loc.url && loc.url !== '#';
+    const btnHtml = hasLink
+      ? `<a class="ar-btn" href="${loc.url}" target="_blank" onclick="if(window._mapTrack)window._mapTrack.linkClick('${loc.title} · ${loc.tag}','${loc.url}')">↗ AR Experience öffnen</a>`
+      : `<div style="font-size:11px;color:rgba(26,26,26,0.35);text-align:center;padding:10px 0;letter-spacing:0.08em;text-transform:uppercase;">Coming Soon</div>`;
+
     marker.bindPopup(`
       <div class="popup-bar"></div>
       <div class="popup-inner">
@@ -490,6 +598,7 @@
         <h2>${loc.title}</h2>
         <p>${loc.desc}</p>
         <div class="popup-coords">📍 ${loc.coords}</div>
+        ${btnHtml}
       </div>
     `, { maxWidth: 280 });
 
