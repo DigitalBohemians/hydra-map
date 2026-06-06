@@ -116,22 +116,6 @@
       margin-bottom: 14px;
       font-weight: 500;
     }
-    .ar-btn {
-      display: block;
-      width: 100%;
-      padding: 13px;
-      background: var(--dark);
-      color: #fff;
-      text-align: center;
-      text-decoration: none;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      border-radius: 10px;
-      transition: opacity 0.2s;
-    }
-    .ar-btn:hover { opacity: 0.8; }
     .marker-outer {
       width: 40px;
       height: 40px;
@@ -273,7 +257,7 @@
       tag: "Physische Ausstellung",
       desc: "Artist details coming soon.",
       coords: "37.35158° N · 23.46232° E",
-      url: "https://digitalbohemians.github.io/ar3d-location/",
+      url: "#",
       filled: true
     },
     {
@@ -282,7 +266,7 @@
       tag: "AR Poster",
       desc: "Artist details coming soon.",
       coords: "37.35033° N · 23.46693° E",
-      url: "https://digitalbohemians.github.io/AR-Hydra/",
+      url: "#",
       filled: false
     },
     { lat: 37.353243, lng: 23.480410, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.35324° N · 23.48041° E", url: "#", filled: false, style: "purple-black" },
@@ -326,15 +310,11 @@
   locations.forEach((loc, i) => {
     const marker = L.marker([loc.lat, loc.lng], { icon: makeIcon(loc.filled, map.getZoom(), loc.style) }).addTo(map);
 
-    // ── Marker-Klick tracken ──
     marker.on('click', function() {
       track('Marker-Klick', loc.title, loc.tag);
     });
 
-    const hasLink = loc.url && loc.url !== '#';
-    const btnHtml = hasLink
-      ? `<a class="ar-btn" href="${loc.url}" target="_blank" onclick="track('AR-Link-Klick','${loc.title} · ${loc.tag}','${loc.url}')">↗ AR Experience öffnen</a>`
-      : `<div style="font-size:11px;color:rgba(26,26,26,0.35);text-align:center;padding:10px 0;letter-spacing:0.08em;text-transform:uppercase;">Coming Soon</div>`;
+    const btnHtml = `<div style="font-size:11px;color:rgba(26,26,26,0.35);text-align:center;padding:10px 0;letter-spacing:0.08em;text-transform:uppercase;">Coming Soon</div>`;
 
     marker.bindPopup(`
       <div class="popup-bar"></div>
