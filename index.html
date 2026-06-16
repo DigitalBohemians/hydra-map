@@ -49,25 +49,6 @@
       margin-top: 1px;
     }
     #map { flex: 1; width: 100%; position: relative; }
-    .locate-btn {
-      position: absolute;
-      bottom: 100px;
-      right: 14px;
-      z-index: 800;
-      width: 44px;
-      height: 44px;
-      background: #fff;
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      transition: transform 0.15s;
-    }
-    .locate-btn:active { transform: scale(0.93); }
     .leaflet-popup-content-wrapper {
       background: #fff !important;
       border: none !important;
@@ -136,19 +117,6 @@
       border-radius: 50%;
       background: #1a1a1a;
       pointer-events: none;
-    }
-    .my-location-dot {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #22d3ee;
-      border: 3px solid #fff;
-      box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
-      animation: pulse-blue 2s ease-in-out infinite;
-    }
-    @keyframes pulse-blue {
-      0%, 100% { box-shadow: 0 0 0 3px rgba(59,130,246,0.3); }
-      50% { box-shadow: 0 0 0 10px rgba(59,130,246,0.0); }
     }
     .legend {
       position: absolute;
@@ -220,7 +188,7 @@
 </header>
 
 <div id="map"></div>
-<button class="locate-btn" id="locateBtn" title="Zu meinem Standort">🎯</button>
+
 
 <script>
   // ── Hydra Map · Analytics Tracker · Google Sheets ──
@@ -272,7 +240,7 @@
     { lat: 37.353243, lng: 23.480410, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.35324° N · 23.48041° E", url: "#", filled: false, style: "purple-black" },
     { lat: 37.353844, lng: 23.475182, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.35384° N · 23.47518° E", url: "#", filled: false, style: "purple-black" },
     { lat: 37.353013, lng: 23.467189, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.35301° N · 23.46719° E", url: "#", filled: false, style: "purple-black" },
-    { lat: 37.352643, lng: 23.466445, title: "Miaoulia Statue", tag: "AR Art Group Show", desc: "Artist details coming soon.", coords: "37.35264° N · 23.46645° E", url: "#", filled: false, style: "purple-white" },
+    { lat: 37.352643, lng: 23.466445, title: "Miaoulia Statue", tag: "AR Art Group Show", desc: "Stand in front of the Miaoulia Statue to see it! Tap on Galen's Play Button and listen to the music too.", coords: "", url: "https://lens.snap.com/experience/98291f7a-5bc4-467e-8ea0-b9edc5aa86fd", filled: false, style: "purple-white", snaplink: true },
     { lat: 37.348514, lng: 23.468132, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.34851° N · 23.46813° E", url: "#", filled: false, style: "purple-black" },
     { lat: 37.348126, lng: 23.458214, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.34813° N · 23.45821° E", url: "#", filled: false, style: "purple-black" },
     { lat: 37.347824, lng: 23.457589, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.34782° N · 23.45759° E", url: "#", filled: false, style: "purple-black" },
@@ -287,7 +255,7 @@
     { lat: 37.346969, lng: 23.465231, title: "Natacha Best", subtitle: "French Painter", tag: "Open Studio", desc: "", coords: "Hydra Town", url: "https://www.instagram.com/bestofnatacha/", filled: true, style: "blue-black", instagram: true },
     { lat: 37.345693, lng: 23.466908, title: "Jacqueline Savidge", subtitle: "Visual Artist", tag: "Open Studio", desc: "", coords: "Hydra Town", url: "https://www.instagram.com/jacqueline.savidge/", filled: true, style: "blue-black", instagram: true },
     { lat: 37.349184, lng: 23.464986, title: "Veranda Restaurant", subtitle: "Lisa Pohl", tag: "Physical Exhibition", desc: "Swiss Fine Arts painter based in Zurich — works on physical display at Veranda Restaurant, Hydra.", coords: "Hydra Port", url: "#", filled: true, style: "teal-black", instagram: false },
-    { lat: 37.3508, lng: 23.4672, title: "Tetsis Museum", subtitle: "Tom Powell", tag: "Physical Exhibition", desc: "15.06.2026 – 30.06.2026", coords: "Hydra Town", url: "#", filled: true, style: "teal-black", instagram: false },
+    { lat: 37.34803, lng: 23.46342, title: "Tetsis Museum", subtitle: "Tom Powell", tag: "Physical Exhibition", desc: "15.06.2026 – 30.06.2026", coords: "Hydra Town", url: "#", filled: true, style: "teal-black", instagram: false },
     { lat: 37.347544, lng: 23.457520, title: "Tom Powell", subtitle: "Studio Visit", tag: "Open Studio", desc: "", coords: "Kamini", url: "https://www.instagram.com/tompowell.art/", filled: true, style: "blue-black", instagram: true }
   ];
 
@@ -324,6 +292,8 @@
 
     const btnHtml = loc.instagram
       ? `<a class="ar-btn" href="${loc.url}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;" onclick="track('Instagram-Klick','${loc.title}','${loc.url}')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Book your visit via Instagram</a>`
+      : loc.snaplink
+      ? `<a class="ar-btn" href="${loc.url}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;padding:16px;" onclick="track('Snap-Klick','${loc.title}','${loc.url}')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg> Open Group Show</a>`
       : `<div style="font-size:11px;color:rgba(26,26,26,0.35);text-align:center;padding:10px 0;letter-spacing:0.08em;text-transform:uppercase;">Coming Soon</div>`;
 
     marker.bindPopup(`
@@ -333,13 +303,12 @@
         <h2>${loc.title}</h2>
         ${loc.subtitle ? `<p style="font-size:12px;font-weight:500;color:rgba(26,26,26,0.45);margin-top:-4px;margin-bottom:8px;letter-spacing:0.01em;">${loc.subtitle}</p>` : ''}
         ${loc.desc ? `<p>${loc.desc}</p>` : ''}
-        <div class="popup-coords">📍 ${loc.coords}</div>
+        ${loc.coords ? `<div class="popup-coords">📍 ${loc.coords}</div>` : ''}
         ${btnHtml}
       </div>
     `, { maxWidth: 280 });
 
     markers.push({ marker, filled: loc.filled, style: loc.style });
-    if (i === 0) setTimeout(() => marker.openPopup(), 800);
   });
 
   map.on('zoomend', () => {
@@ -347,29 +316,6 @@
     markers.forEach(({ marker, filled, style }) => {
       marker.setIcon(makeIcon(filled, z, style));
     });
-  });
-
-  let myMarker = null;
-  const myIcon = L.divIcon({
-    className: '',
-    html: `<div class="my-location-dot"></div>`,
-    iconSize: [18, 18],
-    iconAnchor: [9, 9],
-  });
-
-  if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(pos => {
-      const { latitude: lat, longitude: lng } = pos.coords;
-      if (!myMarker) {
-        myMarker = L.marker([lat, lng], { icon: myIcon, zIndexOffset: 1000 }).addTo(map);
-      } else {
-        myMarker.setLatLng([lat, lng]);
-      }
-    }, null, { enableHighAccuracy: true, maximumAge: 3000, timeout: 10000 });
-  }
-
-  document.getElementById('locateBtn').addEventListener('click', () => {
-    if (myMarker) map.setView(myMarker.getLatLng(), 17);
   });
 
   const legendEl = document.createElement('div');
@@ -380,7 +326,6 @@
     <div class="legend-item"><span class="legend-dot white"></span> AR Groupshow</div>
     <div class="legend-item"><span class="legend-dot" style="background:#22d3ee;border-color:#1a1a1a"></span> Open Studio</div>
     <div class="legend-item"><span class="legend-dot" style="background:#06b6d4;border-color:#1a1a1a"></span> Physical Exhibition</div>
-    <div class="legend-item"><span class="legend-dot blue"></span> My Location</div>
   `;
   document.getElementById('map').appendChild(legendEl);
 </script>
