@@ -283,9 +283,12 @@
     { lat: 37.346618, lng: 23.459154, title: "Exhibition Point", tag: "AR Poster", desc: "Artist details coming soon.", coords: "37.34662° N · 23.45915° E", url: "#", filled: false, style: "purple-black" },
     { lat: 37.301223, lng: 23.395489, title: "Exhibition Point", tag: "Exhibition Point", desc: "Artist details coming soon.", coords: "37.30122° N · 23.39549° E", url: "#", filled: false, style: "purple-black" },
     { lat: 37.334333, lng: 23.463215, title: "Moni Profitou Iliou", tag: "Exhibition Point", desc: "Artist details coming soon.", coords: "Moni Profitou Iliou, 180 40", url: "#", filled: false, style: "purple-black" },
-    { lat: 37.351817, lng: 23.468043, title: "Andreas Horstmann", subtitle: "Sculptor & Painter", tag: "Open Studio", desc: "", coords: "37.35182° N · 23.46804° E", url: "https://www.instagram.com/hydranart/", filled: true, style: "blue-black", instagram: true },
-    { lat: 37.346969, lng: 23.465231, title: "Natacha Best", subtitle: "French Painter", tag: "Open Studio", desc: "", coords: "37.34697° N · 23.46523° E", url: "https://www.instagram.com/bestofnatacha/", filled: true, style: "blue-black", instagram: true },
-    { lat: 37.345693, lng: 23.466908, title: "Jacqueline Savidge", subtitle: "Visual Artist", tag: "Open Studio", desc: "", coords: "Ύδρα 180 40, Greece", url: "https://www.instagram.com/jacqueline.savidge/", filled: true, style: "blue-black", instagram: true }
+    { lat: 37.351817, lng: 23.468043, title: "Andreas Horstmann", subtitle: "Sculptor & Painter", tag: "Open Studio", desc: "", coords: "Hydra Port", url: "https://www.instagram.com/hydranart/", filled: true, style: "blue-black", instagram: true },
+    { lat: 37.346969, lng: 23.465231, title: "Natacha Best", subtitle: "French Painter", tag: "Open Studio", desc: "", coords: "Hydra Town", url: "https://www.instagram.com/bestofnatacha/", filled: true, style: "blue-black", instagram: true },
+    { lat: 37.345693, lng: 23.466908, title: "Jacqueline Savidge", subtitle: "Visual Artist", tag: "Open Studio", desc: "", coords: "Hydra Town", url: "https://www.instagram.com/jacqueline.savidge/", filled: true, style: "blue-black", instagram: true },
+    { lat: 37.349184, lng: 23.464986, title: "Veranda Restaurant", subtitle: "Lisa Pohl", tag: "Physical Exhibition", desc: "Swiss Fine Arts painter based in Zurich — works on physical display at Veranda Restaurant, Hydra.", coords: "Hydra Port", url: "#", filled: true, style: "teal-black", instagram: false },
+    { lat: 37.3508, lng: 23.4672, title: "Tetsis Museum", subtitle: "Tom Powell", tag: "Physical Exhibition", desc: "15.06.2026 – 30.06.2026", coords: "Hydra Town", url: "#", filled: true, style: "teal-black", instagram: false },
+    { lat: 37.347544, lng: 23.457520, title: "Tom Powell", subtitle: "Studio Visit", tag: "Open Studio", desc: "", coords: "Kamini", url: "https://www.instagram.com/tompowell.art/", filled: true, style: "blue-black", instagram: true }
   ];
 
   function markerSize(zoom) {
@@ -298,6 +301,7 @@
     const inner = Math.round(s * 0.68);
     let outerColor = '#a855f7';
     if (style === 'blue-black') outerColor = '#22d3ee';
+    if (style === 'teal-black') outerColor = '#06b6d4';
     let innerColor = '#1a1a1a';
     if (style === 'purple-white') innerColor = '#ffffff';
     return L.divIcon({
@@ -375,6 +379,7 @@
     <div class="legend-item"><span class="legend-dot"></span> Exhibition Point</div>
     <div class="legend-item"><span class="legend-dot white"></span> AR Groupshow</div>
     <div class="legend-item"><span class="legend-dot" style="background:#22d3ee;border-color:#1a1a1a"></span> Open Studio</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#06b6d4;border-color:#1a1a1a"></span> Physical Exhibition</div>
     <div class="legend-item"><span class="legend-dot blue"></span> My Location</div>
   `;
   document.getElementById('map').appendChild(legendEl);
