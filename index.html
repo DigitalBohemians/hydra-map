@@ -261,6 +261,30 @@
       style: "green-black"
     },
     {
+      lat: 37.354152, lng: 23.476428,
+      title: "Rita Habermann",
+      subtitle: "Sculpture",
+      tag: "AR Poster",
+      desc: "A sculptor based in Greece for 40 years, inspired by its people, landscapes and light. Trained with French and Italian sculptors, she is best known for the 'Taygeta' series and her Sculpture Museum in Koilada, Argolida.",
+      coords: "Atelier Sud",
+      arlink: "https://lens.snap.com/experience/65f08642-bc70-4630-97ea-4d47c9f04fa7",
+      url: "https://lens.snap.com/experience/65f08642-bc70-4630-97ea-4d47c9f04fa7",
+      filled: true,
+      style: "green-black"
+    },
+    {
+      lat: 37.353756, lng: 23.479842,
+      title: "KartYdra",
+      subtitle: "Art · Cyanotype · Sound · Poetry",
+      tag: "AR Poster",
+      desc: "Rebecca Pelayo (Rebekoukou) is a visual artist & architect from Madagascar working with installation, cyanotype and textiles inspired by islands and ancestral heritage. Clio Van de Walle is a poet and sound artist exploring memory, voice and mythology through spoken word and immersive storytelling.",
+      coords: "Mandraki",
+      arlink: "https://lens.snap.com/experience/92b21e2f-4d15-4ab5-88fb-ab87e37da66e",
+      url: "https://lens.snap.com/experience/92b21e2f-4d15-4ab5-88fb-ab87e37da66e",
+      filled: true,
+      style: "green-black"
+    },
+    {
       lat: 37.353636, lng: 23.481402,
       title: "Sandra Zemor",
       subtitle: "Music · Poetry · Drawing · Moving Image",
@@ -273,7 +297,7 @@
       style: "green-black"
     },
     {
-      lat: 37.353844, lng: 23.475182,
+      lat: 37.353268, lng: 23.480457,
       title: "Maribé Lambert-Markouizos",
       subtitle: "Painting",
       tag: "AR Poster",
@@ -303,13 +327,11 @@
       title: "Dana",
       subtitle: "Ceramics · Hand-Built Pottery",
       tag: "AR Poster",
-      desc: "A ceramic artist creating hand-built pottery inspired by ancient civilizations. Her work explores timeless forms, organic textures and archaeological aesthetics, blending traditional craftsmanship with a contemporary artistic sensibility.",
+      desc: "Poster was temporarily removed. Please check back soon.",
       coords: "Hydra Town",
-      hint: "Bench under the tree near the Museum.",
-      arlink: "https://lens.snap.com/experience/fc638419-9ab7-42b7-be65-7dbed3a09e69",
-      url: "https://lens.snap.com/experience/fc638419-9ab7-42b7-be65-7dbed3a09e69",
-      filled: true,
-      style: "green-black"
+      url: "#",
+      filled: false,
+      style: "grey-black"
     },
     {
       lat: 37.349099, lng: 23.466754,
@@ -357,8 +379,10 @@
     let outerColor = '#a855f7';
     if (style === 'blue-black') outerColor = '#22d3ee';
     if (style === 'green-black') outerColor = '#22c55e';
+    if (style === 'grey-black') outerColor = '#9ca3af';
     let innerColor = '#1a1a1a';
     if (style === 'purple-white') innerColor = '#ffffff';
+    if (style === 'grey-black') innerColor = '#6b7280';
     return L.divIcon({
       className: '',
       html: `<div class="marker-outer" style="width:${s}px;height:${s}px;border-width:${Math.max(2,Math.round(s*0.08))}px;background:${outerColor} !important"><div class="marker-inner" style="width:${inner}px;height:${inner}px;background:${innerColor}"></div></div>`,
