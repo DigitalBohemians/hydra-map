@@ -320,7 +320,7 @@
       filled: true,
       style: "green-black"
     },
-    { lat: 37.352643, lng: 23.466445, title: "Miaoulia Statue", tag: "AR Art Group Show", desc: "Stand in front of the Miaoulia Statue to see it! Tap on Galen's Play Button and listen to the music too.", coords: "", url: "#", filled: false, style: "grey-black", snaplink: false },
+    { lat: 37.352643, lng: 23.466445, title: "Miaoulia Statue", tag: "AR Art Group Show", desc: "Stand in front of the Miaoulia Statue to see it! Tap on Galen's Play Button and listen to the music too.", coords: "", url: "https://lens.snap.com/experience/98291f7a-5bc4-467e-8ea0-b9edc5aa86fd", filled: false, style: "purple-white", snaplink: true },
     {
       lat: 37.348224, lng: 23.458059,
       title: "Belladonna Lagerkvist",
@@ -339,11 +339,13 @@
       title: "Dana",
       subtitle: "Ceramics · Hand-Built Pottery",
       tag: "AR Poster",
-      desc: "Poster was temporarily removed. Please check back soon.",
+      desc: "A ceramic artist creating hand-built pottery inspired by ancient civilizations. Her work explores timeless forms, organic textures and archaeological aesthetics, blending traditional craftsmanship with a contemporary artistic sensibility.",
       coords: "Hydra Town",
-      url: "#",
-      filled: false,
-      style: "grey-black"
+      hint: "Bench under the tree near the Museum.",
+      arlink: "https://lens.snap.com/experience/fc638419-9ab7-42b7-be65-7dbed3a09e69",
+      url: "https://lens.snap.com/experience/fc638419-9ab7-42b7-be65-7dbed3a09e69",
+      filled: true,
+      style: "green-black"
     },
     { lat: 37.351817, lng: 23.468043, title: "Andreas Horstmann", subtitle: "Sculptor & Painter", tag: "Open Studio", desc: "", coords: "Hydra Port", url: "https://www.instagram.com/hydranart/", filled: true, style: "blue-black", instagram: true },
     {
@@ -439,7 +441,7 @@
       style: "green-black"
     },
     { lat: 37.349184, lng: 23.464986, title: "Veranda Restaurant", subtitle: "Lisa Pohl", tag: "Physical Exhibition", desc: "Swiss Fine Arts painter based in Zurich — works on physical display at Veranda Restaurant, Hydra.", coords: "Hydra Port", url: "#", filled: true, style: "blue-black", instagram: false },
-    { lat: 37.34803, lng: 23.46342, title: "Tetsis Museum", subtitle: "Tom Powell", tag: "Physical Exhibition", desc: "15.06.2026 – 30.06.2026", coords: "Hydra Town", url: "#", filled: true, style: "blue-black", instagram: false },
+    { lat: 37.34803, lng: 23.46342, title: "Tetsis Museum", subtitle: "Tom Powell", tag: "Physical Exhibition", desc: "15.06.2026 – 30.06.2026", coords: "Hydra Town", url: "#", filled: true, style: "blue-black", instagram: false, nobutton: true },
     { lat: 37.347544, lng: 23.457520, title: "Tom Powell", subtitle: "Studio Visit", tag: "Open Studio", desc: "", coords: "Kamini", url: "https://www.instagram.com/tompowell.art/", filled: true, style: "blue-black", instagram: true },
     {
       lat: 37.343628, lng: 23.446397,
@@ -452,6 +454,31 @@
       url: "https://lens.snap.com/experience/2d04a4d2-dec5-43ab-883a-06329fbd0f3c",
       filled: true,
       style: "green-black"
+    },
+    {
+      lat: 37.349579, lng: 23.467900,
+      title: "Caprice",
+      subtitle: "Community Sponsor",
+      tag: "Restaurant",
+      desc: "Best Greek pizza on the island — thin handmade crust with seasonal ingredients. Plus a wide variety of fresh pasta dishes. Hidden in a charming alley just 150m behind the port, open since 1994.",
+      coords: "Sachtouri, Hydra",
+      hint: "📌 Hidden alley behind the port — worth finding!",
+      url: "https://www.capricehydra.eu",
+      filled: true,
+      style: "pink-black",
+      sponsor: true
+    },
+    {
+      lat: 37.349383, lng: 23.467426,
+      title: "Labeîn",
+      subtitle: "Community Sponsor",
+      tag: "Shop & Coffee Bar",
+      desc: "Local snacks and an impressive wine selection from local Greek wineries and international labels — a relaxed spot in the heart of Hydra Town.",
+      coords: "Tompazi, Hydra",
+      url: "#",
+      filled: true,
+      style: "pink-black",
+      sponsor: true
     }
   ];
 
@@ -467,6 +494,7 @@
     if (style === 'blue-black') outerColor = '#22d3ee';
     if (style === 'green-black') outerColor = '#22c55e';
     if (style === 'grey-black') outerColor = '#9ca3af';
+    if (style === 'pink-black') outerColor = '#ff6ec7';
     let innerColor = '#1a1a1a';
     if (style === 'purple-white') innerColor = '#ffffff';
     if (style === 'grey-black') innerColor = '#6b7280';
@@ -491,19 +519,25 @@
     const btnHtml = loc.arlink
       ? `<div style="margin-bottom:10px;font-size:11px;color:rgba(26,26,26,0.5);text-align:center;letter-spacing:0.04em;">📷 Point camera to poster · Unmute for sound<br>Scan QR Code or open this link:</div>
          <a class="ar-btn" href="${loc.arlink}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;padding:15px;" onclick="track('AR-Link-Klick','${loc.title}','${loc.arlink}')"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg> Open AR Experience</a>`
+      : loc.sponsor && loc.url !== '#'
+      ? `<a class="ar-btn" href="${loc.url}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#ff6ec7;" onclick="track('Sponsor-Klick','${loc.title}','${loc.url}')">↗ Visit Website</a>`
+      : loc.sponsor
+      ? `<div style="font-size:11px;color:rgba(26,26,26,0.35);text-align:center;padding:10px 0;letter-spacing:0.08em;text-transform:uppercase;">Community Sponsor</div>`
       : loc.instagram
       ? `<a class="ar-btn" href="${loc.url}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;" onclick="track('Instagram-Klick','${loc.title}','${loc.url}')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Book your visit via Instagram</a>`
       : loc.snaplink
       ? `<a class="ar-btn" href="${loc.url}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;padding:16px;" onclick="track('Snap-Klick','${loc.title}','${loc.url}')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg> Open Group Show</a>`
       : loc.style === 'grey-black'
       ? `<div style="font-size:11px;color:rgba(26,26,26,0.35);text-align:center;padding:10px 0;letter-spacing:0.08em;text-transform:uppercase;">⚠ Temporarily Out of Service</div>`
+      : loc.nobutton
+      ? ``
       : `<div style="font-size:11px;color:rgba(26,26,26,0.35);text-align:center;padding:10px 0;letter-spacing:0.08em;text-transform:uppercase;">Coming Soon</div>`;
 
     marker.bindPopup(`
       <div class="popup-bar"></div>
       <div class="popup-inner" style="text-align:left;">
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;margin-top:8px;padding-right:28px;">
-          <div class="popup-tag" style="${loc.style === 'green-black' ? 'color:#22c55e;' : loc.instagram ? 'color:#22d3ee;' : ''}margin-bottom:0;">${loc.tag}</div>
+          <div class="popup-tag" style="${loc.style === 'green-black' ? 'color:#22c55e;' : loc.instagram ? 'color:#22d3ee;' : loc.style === 'pink-black' ? 'color:#ff6ec7;' : ''}margin-bottom:0;">${loc.tag}</div>
         </div>
         <h2 style="text-align:left;">${loc.title}</h2>
         ${loc.subtitle ? `<p style="font-size:12px;font-weight:500;color:rgba(26,26,26,0.45);margin-top:2px;margin-bottom:4px;letter-spacing:0.01em;text-align:left;">${loc.subtitle}</p>` : ''}
@@ -534,9 +568,9 @@
   legendEl.innerHTML = `
     <div class="legend-title">Legend</div>
     <div class="legend-item"><span class="legend-dot" style="background:#22c55e;border-color:#1a1a1a"></span> AR Ready</div>
-    <div class="legend-item"><span class="legend-dot"></span> Exhibition Point</div>
     <div class="legend-item"><span class="legend-dot white"></span> AR Groupshow</div>
     <div class="legend-item"><span class="legend-dot" style="background:#22d3ee;border-color:#1a1a1a"></span> Open Studios & Exhibitions</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#ff6ec7;border-color:#1a1a1a"></span> Community Sponsor</div>
   `;
   document.getElementById('map').appendChild(legendEl);
 </script>
